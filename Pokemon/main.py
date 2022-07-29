@@ -191,3 +191,5 @@ for type in gary_pokemon.types:
     else:
         print(f"{ash.name}'s has won against {gary.name} using a {ash_pokemon} to beat {gary.name}'s {gary_pokemon}!")
         break
+
+# the above logic is currently wrong, will fix soon

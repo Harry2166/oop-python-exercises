@@ -1,11 +1,11 @@
 import random
 
-names = open('OOP/Pokemon/first-names.txt')
+names = open(r'/home/harry2166/Desktop/repos/oop-python-exercises/Pokemon/first-names.txt') # input your actual directory here
 name_list = []
 for line in names:
     name_list.append(line.strip())
 
-trainer_classes = open('OOP/Pokemon/trainer-classes.txt')
+trainer_classes = open(r'/home/harry2166/Desktop/repos/oop-python-exercises/Pokemon/trainer-classes.txt') # input your actual directory here
 trainer_classes_list = []
 for line in trainer_classes:
     trainer_classes_list.append(line.strip())
@@ -37,5 +37,3 @@ pokemon = {'Bulbasaur' : ['Grass', 'Poison'], 'Ivysaur' : ['Grass', 'Poison'], '
             'Jolteon' : ['Electric'], 'Flareon' : ['Fire'], 'Porygon' : ['Normal'], 'Omanyte' : ['Rock', 'Water'], 'Omastar' : ['Rock', 'Water'], 'Kabuto' : ['Rock', 'Water'], 
             'Kabutops' : ['Rock', 'Water'], 'Aerodactyl' : ['Rock', 'Flying'], 'Snorlax' : ['Normal'], 'Articuno' : ['Ice', 'Flying'], 'Zapdos' : ['Electric', 'Flying'], 
             'Moltres' : ['Fire', 'Flying'], 'Dratini' : ['Dragon'], 'Dragonair' : ['Dragon'], 'Dragonite' : ['Dragon', 'Flying'], 'Mewtwo' : ['Psychic'], 'Mew' : ['Psychic']}
-
-print(random.randint(0, 6))
