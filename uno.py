@@ -110,7 +110,7 @@ def reverse_card(l, hand_number):
 print("======================================================================================================")
 
 deck1 = Deck()
-deck1.pile
+#deck1.pile
 deck1.shuffle()
 
 t = list()
