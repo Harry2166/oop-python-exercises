@@ -164,8 +164,8 @@ print(gary)
 
 ash.duel(gary)
 
-print(f'GARY: {gary.number_of_pokemon}')
-print(f'ASH: {ash.number_of_pokemon}')
+print(f'{gary.name.upper()} POKEMON: {gary.number_of_pokemon}')
+print(f'{ash.name.upper()} POKEMON: {ash.number_of_pokemon}')
 
 gary_pokemon = gary.pokemon_team[random.randint(0, gary.number_of_pokemon-1)]
 ash_pokemon = ash.pokemon_team[random.randint(0, ash.number_of_pokemon-1)]
@@ -186,10 +186,10 @@ else:
 
 for type in gary_pokemon.types:
     if type in ash_type_pokemon[-1]:
-        print(f"{gary.name}'s has won against {ash.name} using a {gary_pokemon} to beat {ash.name}'s {ash_pokemon}!")
+        print(f"{gary.name} has won against {ash.name} using a {gary_pokemon} to beat {ash.name}'s {ash_pokemon}!")
         break
     else:
-        print(f"{ash.name}'s has won against {gary.name} using a {ash_pokemon} to beat {gary.name}'s {gary_pokemon}!")
+        print(f"{ash.name} has won against {gary.name} using a {ash_pokemon} to beat {gary.name}'s {gary_pokemon}!")
         break
 
 # the above logic is currently wrong, will fix soon
