@@ -24,7 +24,7 @@ Have multiple social network apps (?)
   -> friends and friends list ✓
   -> posts
   -> send friend request ✓
-  -> delete friends
+  -> delete friends ✓
 
 Post class
   -> like and comment on the posts
