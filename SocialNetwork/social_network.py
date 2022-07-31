@@ -23,6 +23,8 @@ Have multiple social network apps (?)
   -> check if person has an account -> put it into a list ✓
   -> friends and friends list ✓
   -> posts
+    -> can create posts ✓
+    -> keep track of past posts
   -> send friend request ✓
   -> delete friends ✓
 
@@ -48,6 +50,7 @@ class Person():
     self.birthday = birthday
     self.friend_list = []
     self.friend_request_inbox = [] # this is where the friend requests will be staying in
+    self.posts = []
 
     if name == None:
       self.name = random.choice(name_list)
@@ -58,10 +61,19 @@ class Person():
   def __str__(self):
     return f"I am {self.name} and I am {self.age} years old."
 
+accepted_posts = ['picture', 'photo', 'text', 'video' ] # probably add a description about what the post is about
 class Post():
 
-  def __init__(self, type_of_post:str):
-    self.type_of_post = type_of_post
+  def __init__(self, type_of_post:str, user:Person): # type_of_post == picture, photo, text, or video
+
+    if type_of_post.lower() not in accepted_posts:
+      print("You did not post an accepted type of post.")
+      return
+    self.type_of_post = type_of_post.lower()
+    self.user = user
+
+  def __str__(self):
+    return f"{self.user.name} posted a {self.type_of_post}"
 
 class SocialNetwork():
 
@@ -85,16 +97,26 @@ class SocialNetwork():
     for account in self.accounts:
       print(account.name)
 
-  def friend_list(self, user:Person): # shows the friend list of the user
+  def show_friend_list(self, user:Person):
+
+    if len(user.friend_list) == 0:
+      print(f"You ({user.name}) do not have any friends in your friend list.")
+      return False
+
     print(f"Here are your ({user.name}) friends:")
     for friend in user.friend_list:
       print(f" -{friend.name} #{user.friend_list.index(friend) + 1}")
-
+    return
+     
   def delete_friend(self, user:Person):
-    self.friend_list(user)
+    if not self.show_friend_list(user):
+      self.show_friend_list(user)
+      return
+
+    self.show_friend_list(user)
     user_index = int(input("Input the index of the person you'd remove as a friend: "))
     del user.friend_list[user_index - 1]
-    return    
+    return
 
   def send_friend_request(self, user1:Person, user2:Person):
     # check if both users have an account
@@ -122,6 +144,16 @@ class SocialNetwork():
     user_index = int(input("Input the index of the person you'd remove the friend request of: "))
     del user.friend_request_inbox[user_index - 1]
     return
+
+  def create_post(self, post:str, user:Person):
+    content = Post(post, user)
+    user.posts.append(content)
+    print(content)
+
+  def check_past_posts(self, user:Person):
+    print(f"{user.name} has had the following posts before:")
+    for post in user.posts:
+      print(f" -{post.type_of_post}")
   
   def __str__(self):
     return f"We are {self.name} and we currently have {len(self.accounts)} user(s)!"
@@ -129,32 +161,36 @@ class SocialNetwork():
 print("Testing")
 print("=================================================================")
 
-MukhaLibro = SocialNetwork("MukhaLibro")
+OurTube = SocialNetwork("OurTube")
 
 person1 = Person()
 person2 = Person()
 person3 = Person()
 person4 = Person()
 
-MukhaLibro.create_account(person1)
-print(MukhaLibro)
-MukhaLibro.has_account(person1)
-MukhaLibro.has_account(person2)
-MukhaLibro.create_account(person2)
-MukhaLibro.create_account(person3)
-MukhaLibro.create_account(person4)
+OurTube.create_account(person1)
+print(OurTube)
+OurTube.has_account(person1)
+OurTube.has_account(person2)
+OurTube.create_account(person2)
+OurTube.create_account(person3)
+OurTube.create_account(person4)
 
-print(MukhaLibro)
+print(OurTube)
 
-MukhaLibro.all_accounts()
-MukhaLibro.send_friend_request(person1, person2)
-MukhaLibro.send_friend_request(person3, person2)
-MukhaLibro.send_friend_request(person4, person2)
-MukhaLibro.has_account(person4)
-MukhaLibro.accept_friend_request(person2)
-MukhaLibro.show_friend_requests(person2)
-MukhaLibro.accept_friend_request(person2)
-MukhaLibro.friend_list(person2)
-MukhaLibro.friend_list(person1)
-MukhaLibro.delete_friend(person2)
-MukhaLibro.friend_list(person2)
+OurTube.all_accounts()
+# OurTube.send_friend_request(person1, person2)
+# OurTube.send_friend_request(person3, person2)
+# OurTube.send_friend_request(person4, person2)
+# OurTube.has_account(person4)
+# OurTube.accept_friend_request(person2)
+# OurTube.show_friend_requests(person2)
+# OurTube.accept_friend_request(person2)
+# OurTube.show_friend_list(person2)
+# OurTube.show_friend_list(person1)
+# OurTube.delete_friend(person2)
+#OurTube.show_friend_list(person2)
+OurTube.create_post(random.choice(accepted_posts), person1)
+OurTube.create_post(random.choice(accepted_posts), person1)
+OurTube.create_post(random.choice(accepted_posts), person1)
+OurTube.check_past_posts(person1)
