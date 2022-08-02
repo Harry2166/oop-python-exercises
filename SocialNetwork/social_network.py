@@ -13,10 +13,9 @@ what i need to do:
  -> birthday - generate this randomly ✓
  -> username - how will i do this?
  -> profile-picture x
- -> account is private or public
- -> like post - should i connect this to the post class?
- -> comment on post - should i connect this to the post class?
- -> share post - should i connect this to the post class?
+ -> account is private or public x
+ -> like post - should i connect this to the post class? ✓
+ -> comment on post - should i connect this to the post class? ✓
 
 Have multiple social network apps (?)
  - features of the social network
@@ -24,14 +23,13 @@ Have multiple social network apps (?)
   -> friends and friends list ✓
   -> posts
     -> can create posts ✓
-    -> keep track of past posts
+    -> keep track of past posts ✓
   -> send friend request ✓
   -> delete friends ✓
 
 Post class
-  -> like and comment on the posts
-  -> share
-  -> picture, text, or video
+  -> like and comment on the posts ✓
+  -> picture, text, or video ✓
 '''
 
 import random
@@ -51,6 +49,7 @@ class Person():
     self.friend_list = []
     self.friend_request_inbox = [] # this is where the friend requests will be staying in
     self.posts = []
+    self.liked_posts = []
 
     if name == None:
       self.name = random.choice(name_list)
@@ -62,6 +61,7 @@ class Person():
     return f"I am {self.name} and I am {self.age} years old."
 
 accepted_posts = ['picture', 'photo', 'text', 'video' ] # probably add a description about what the post is about
+
 class Post():
 
   def __init__(self, type_of_post:str, user:Person): # type_of_post == picture, photo, text, or video
@@ -71,6 +71,7 @@ class Post():
       return
     self.type_of_post = type_of_post.lower()
     self.user = user
+    self.comment_section = []
 
   def __str__(self):
     return f"{self.user.name} posted a {self.type_of_post}"
@@ -154,6 +155,30 @@ class SocialNetwork():
     print(f"{user.name} has had the following posts before:")
     for post in user.posts:
       print(f" -{post.type_of_post}")
+
+  def like_post(self, user1:Person, user2:Person):
+    user1.liked_posts.append(user2.posts[-1])
+    print(f"{user1.name} has liked {user2.name}'s {user2.posts[-1].type_of_post}!")
+    return
+
+  def show_liked_posts(self, user:Person):
+    if len(user.liked_posts) > 0:
+      print(f"{user.name} has liked the following posts: ")
+      for post in user.liked_posts:
+        print(f" -{post.type_of_post}")
+      return
+    print(f"{user.name} does not have any liked posts.")
+
+  def show_comment_section(self, post:Post):
+    for comment in post.comment_section:
+      print(comment)
+
+  def leave_comment(self, user1:Person, user2:Person):
+    print(f"{user1.name} is leaving a comment on {user2.name}'s {user2.posts[-1]}.")
+    comment = input("Please leave your comment here:\n")
+    user2.posts[-1].comment_section.append(comment)
+    print(f"Here is the comment section of {user2.name}'s {user2.posts[-1]}")
+    self.show_comment_section(user2.posts[-1])
   
   def __str__(self):
     return f"We are {self.name} and we currently have {len(self.accounts)} user(s)!"
@@ -194,3 +219,9 @@ OurTube.create_post(random.choice(accepted_posts), person1)
 OurTube.create_post(random.choice(accepted_posts), person1)
 OurTube.create_post(random.choice(accepted_posts), person1)
 OurTube.check_past_posts(person1)
+OurTube.show_liked_posts(person1)
+OurTube.show_liked_posts(person2)
+OurTube.like_post(person2, person1) # first parameter -> who likes, second -> most recent is being liked
+OurTube.show_liked_posts(person2)
+OurTube.leave_comment(person2, person1)
+OurTube.leave_comment(person3, person1)
