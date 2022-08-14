@@ -97,9 +97,23 @@ class Player():
         for i in range(number_of_pokemon):
             self.pokemon_team.append(Pokemon())
 
-    def duel(self, opponent_player):
+    def start_duel(self, opponent_player):
 
         print(f"{self.name} is duelling against {opponent_player.name}!")
+        print(f"{self.name.upper()}'s POKEMON: {self.number_of_pokemon}")
+        print(f"{opponent_player.name.upper()}'s POKEMON: {opponent_player.number_of_pokemon}")
+
+    def type_weaknesses(self, pokemon: Pokemon):
+        if len(pokemon.types) == 1:
+            return monotype(pokemon.types[0])[-1]
+        else:
+            return dualtype(pokemon.types[0], pokemon.types[-1])[-1]
+
+    def type_strengths(self, pokemon: Pokemon):
+        if len(pokemon.types) == 1:
+            return monotype(pokemon.types[0])[0]
+        else:
+            return dualtype(pokemon.types[0], pokemon.types[-1])[0]
 
     def __str__(self):
 
@@ -148,48 +162,52 @@ def dualtype(type1, type2):
 
         return [overall_strength, overall_weakness]
 
-# wow = (random.choice(list(pokemon.keys())))
-# print(wow)
-# print(pokemon.get(wow))
-
-# if len(pokemon.get(wow)) > 1:
-#     print(pokemon.get(wow)[0])
-#     print(pokemon.get(wow)[-1])
-
 ash = Player(random.randint(1, 6))
 gary = Player(random.randint(1, 6))
 
 print(ash)
 print(gary)
 
-ash.duel(gary)
-
-print(f'{gary.name.upper()} POKEMON: {gary.number_of_pokemon}')
-print(f'{ash.name.upper()} POKEMON: {ash.number_of_pokemon}')
+ash.start_duel(gary)
 
 gary_pokemon = gary.pokemon_team[random.randint(0, gary.number_of_pokemon-1)]
 ash_pokemon = ash.pokemon_team[random.randint(0, ash.number_of_pokemon-1)]
 gary_pokemon.battle(ash_pokemon)
 
-if len(gary_pokemon.types) == 1:
-    gary_type_pokemon = monotype(gary_pokemon.types[0])
-else:
-    gary_type_pokemon = dualtype(gary_pokemon.types[0], gary_pokemon.types[-1])
-    
-if len(ash_pokemon.types) == 1:
-    ash_type_pokemon = monotype(ash_pokemon.types[0])
-else:
-    ash_type_pokemon = dualtype(ash_pokemon.types[0], ash_pokemon.types[-1])
+# create a function or method that can handle all the pokemon fighting [i guess just with the one with the type advantage is the one that wins to make things easy]
+def pokemon_battle(trainer1: Player, trainer2: Player):
 
-# for types in ash_type_pokemon[-1]:
-#     print(types)
+    '''
+    - This will go on until there is no more pokemon on one side
+    - Whoever has the type advantage will win for simplicity sake
+    - Will have to remove the selected pokemon from the list of available pokemon
+    - While True loop obviously
+    - will have to use the .type_weakness and .type_strengths for this
+    '''
+    while True:
 
-for type in gary_pokemon.types:
-    if type in ash_type_pokemon[-1]:
-        print(f"{gary.name} has won against {ash.name} using a {gary_pokemon} to beat {ash.name}'s {ash_pokemon}!")
+        print(trainer1)
+        print(trainer2)
+
+        trainer1_random_index = random.randint(0, trainer1.number_of_pokemon-1)
+        trainer2_random_index = random.randint(0, trainer2.number_of_pokemon-1)
+
+        trainer1_pokemon = trainer1.pokemon_team[trainer1_random_index]
+        trainer2_pokemon = trainer2.pokemon_team[trainer2_random_index]
+
+        print(trainer1_pokemon)
+        print(trainer2_pokemon)
+
+        trainer1.pokemon_team.pop(trainer1_random_index)
+        trainer1.number_of_pokemon -= 1
+        trainer2.pokemon_team.pop(trainer2_random_index)
+        trainer2.number_of_pokemon -= 1
+
+        print(trainer1)
+        print(trainer2)
+
         break
-    else:
-        print(f"{ash.name} has won against {gary.name} using a {ash_pokemon} to beat {gary.name}'s {gary_pokemon}!")
-        break
 
-# the above logic is currently wrong, will fix soon
+        trainer1_pokemon.battle(trainer2_pokemon)
+
+pokemon_battle(ash, gary)
