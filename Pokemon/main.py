@@ -5,7 +5,6 @@ import pokemon_typings as pt
 
 '''
 create a pokemon-like game in python using oop
-https://github.com/yurecouto/PyPokemon
 -> WILL HAVE TO ADJUST THE POKEMON_TYPINGS.PY!!!!!!!!!!
 -> pokemon class (name, type, hp, stats?, level)
 --> have methods here that like simulate a pokemon game (you know what this is bruh)
@@ -61,6 +60,7 @@ class Pokemon():
 
         self.pokemon = random.choice(list(pokemon.keys()))
         self.types = pokemon.get(self.pokemon)
+        self.fainted = False
 
     def battle(self, opponent_pokemon):
         print(f"{self.pokemon} is duelling against {opponent_pokemon.pokemon}!")
@@ -73,6 +73,18 @@ class Pokemon():
 
     def show_max_exp(self):
         print(f'{self.pokemon}: {self.max_exp}')
+
+    def type_weaknesses(self):
+        if len(self.types) == 1:
+            return monotype(self.types[0])[-1]
+        else:
+            return dualtype(self.types[0], self.types[-1])[-1]
+
+    def type_strengths(self):
+        if len(self.types) == 1:
+            return monotype(self.types[0])[0]
+        else:
+            return dualtype(self.types[0], self.types[-1])[0]
 
     def __str__(self):
         return f'{self.pokemon}'
@@ -102,18 +114,6 @@ class Player():
         print(f"{self.name} is duelling against {opponent_player.name}!")
         print(f"{self.name.upper()}'s POKEMON: {self.number_of_pokemon}")
         print(f"{opponent_player.name.upper()}'s POKEMON: {opponent_player.number_of_pokemon}")
-
-    def type_weaknesses(self, pokemon: Pokemon):
-        if len(pokemon.types) == 1:
-            return monotype(pokemon.types[0])[-1]
-        else:
-            return dualtype(pokemon.types[0], pokemon.types[-1])[-1]
-
-    def type_strengths(self, pokemon: Pokemon):
-        if len(pokemon.types) == 1:
-            return monotype(pokemon.types[0])[0]
-        else:
-            return dualtype(pokemon.types[0], pokemon.types[-1])[0]
 
     def __str__(self):
 
@@ -195,16 +195,29 @@ def pokemon_battle(trainer1: Player, trainer2: Player):
         trainer1_pokemon = trainer1.pokemon_team[trainer1_random_index]
         trainer2_pokemon = trainer2.pokemon_team[trainer2_random_index]
 
-        print(trainer1_pokemon)
-        print(trainer2_pokemon)
+        print(f"{trainer1.name} sent out {trainer1_pokemon}!")
+        print(f"{trainer2.name} sent out {trainer2_pokemon}!")
+
+        one_on_one = []
+
+        one_on_one.append(trainer1_pokemon)
+        one_on_one.append(trainer2_pokemon)
 
         trainer1.pokemon_team.pop(trainer1_random_index)
         trainer1.number_of_pokemon -= 1
         trainer2.pokemon_team.pop(trainer2_random_index)
         trainer2.number_of_pokemon -= 1
 
-        print(trainer1)
-        print(trainer2)
+        first_move = random.randrange(0,2) # will use this instead of speed stat because I'm lazy
+        second_move = 0 if first_move == 1 else 1
+
+        for type in one_on_one[first_move].types:
+            strengths = one_on_one[second_move].type_strengths
+            print(strengths)
+            if type in strengths:
+                print("SHET!")
+            else:
+                print("LOL!")
 
         break
 
