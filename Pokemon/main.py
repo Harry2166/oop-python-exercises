@@ -212,12 +212,20 @@ def pokemon_battle(trainer1: Player, trainer2: Player):
         second_move = 0 if first_move == 1 else 1
 
         for type in one_on_one[first_move].types:
-            strengths = one_on_one[second_move].type_strengths
-            print(strengths)
-            if type in strengths:
-                print("SHET!")
-            else:
-                print("LOL!")
+            strengths = one_on_one[second_move].type_strengths()
+            weaknesses = one_on_one[second_move].type_weaknesses()
+            if type in weaknesses:
+                print(f"{one_on_one[first_move]} won!")
+                one_on_one.pop(second_move)
+                break
+        
+        for type in one_on_one[second_move].types:
+            strengths = one_on_one[first_move].type_strengths()
+            weaknesses = one_on_one[first_move].type_weaknesses()
+            if type in weaknesses:
+                print(f"{one_on_one[second_move]} won!")
+                one_on_one.pop(first_move)
+                break
 
         break
 
